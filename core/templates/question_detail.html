@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<div>
+    <div>
+        <div>
+            <h4>{{question.topic}}</h4>
+            <small>
+                <p>by {{question.user.username}} on {{question.date_posted}}</p>
+            </small>
+            <p>{{question.description }}</p>
+        </div>
+        <div>
+            {% if question.image_description %}
+            <p>{{question.image_description}}</p>
+            {% endif %}
+
+            {% if question.image %}
+            <img src="{{ question.image.url}}" alt="" width="500px" height="300px">
+            <hr>
+            {% endif %}
+        </div>
+        <div>
+
+            {% if question.another_image_description %}
+            <p>{{question.another_image_description}}</p>
+            {% endif %}
+
+            {% if question.another_image %}
+            <img src="{{ question.another_image.url}}" alt="" width="500px" height="300px">
+            <hr>
+            {% endif %}
+        </div>
+        <div>
+
+            {% if question.other_image_description %}
+            <p>{{question.other_image_description}}</p>
+            {% endif %}
+
+            {% if question.other_image %}
+            <img src="{{ question.other_image.url}}" alt="" width="500px" height="300px">
+            {% endif %}
+        </div>
+    </div>
+    <h4>{{answers.count}} Answers</h4>
+    <details>
+        <summary>
+            <p>View Answers</p>
+        </summary>
+        <div>
+            {% for answer in answers %}
+            <small>
+                <p>{{answer.answer}}</p>
+            </small>
+            <span><small> by: {{answer.user.username}}</small></span>
+            <small>
+                <p> email: {{answer.email}}</p>
+
+                {% if answer.image %}
+                <img src="{{answer.image.url}}" alt="" width="300px">
+                {% endif %}
+
+            </small>
+            {% endfor %}
+
+        </div>
+    </details>
+    <div>
+        {% if new_answer %}
+        <p>Your answer has been posted</p>
+        {% endif %}
+    </div>
+    <div>
+        <h5>Add Answer</h5>
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{answer_form | crispy}}
+            <button type="submit">Add Answer</button>
+        </form>
+    </div>
+</div>
+{% else %}
+<div>
+    <div>
+        <h4>{{question.topic}}</h4>
+        <small>
+            <p>by {{question.user.username}} on {{question.date_posted}}</p>
+        </small>
+        <p>{{question.description }}</p>
+    </div>
+    <div>
+        {% if question.image_description %}
+        <p>{{question.image_description}}</p>
+        {% endif %}
+
+        {% if question.image %}
+        <img src="{{ question.image.url}}" alt="" width="500px" height="300px">
+        <hr>
+        {% endif %}
+    </div>
+    <div>
+
+        {% if question.another_image_description %}
+        <p>{{question.another_image_description}}</p>
+        {% endif %}
+
+        {% if question.another_image %}
+        <img src="{{ question.another_image.url}}" alt="" width="500px" height="300px">
+        <hr>
+        {% endif %}
+    </div>
+    <div>
+
+        {% if question.other_image_description %}
+        <p>{{question.other_image_description}}</p>
+        {% endif %}
+
+        {% if question.other_image %}
+        <img src="{{ question.other_image.url}}" alt="" width="500px" height="300px">
+        {% endif %}
+    </div>
+</div>
+<h4>{{answers.count}} Answers</h4>
+<details>
+    <summary>
+        <p>View Answers</p>
+    </summary>
+    <div>
+        {% for answer in answers %}
+        <small>
+            <p>{{answer.answer}}</p>
+        </small>
+        <span><small> by: {{answer.user.username}}</small></span>
+        <small>
+            <p> email: {{answer.email}}</p>
+
+            {% if answer.image %}
+            <img src="{{answer.image.url}}" alt="" width="300px">
+            {% endif %}
+
+        </small>
+        {% endfor %}
+
+    </div>
+</details>
+{% endif %}
+{% endblock content %}
