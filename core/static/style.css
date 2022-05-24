@@ -1,0 +1,20 @@
+body{
+   
+    /* background: linear-gradient(to right,#B1B3B3FF,#CBCE91FF); */
+    background:linear-gradient(to right,white,gainsboro);
+    padding-top: 70px;
+}
+.index{
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+.question_detail{
+    padding: 20px;
+}
+.user-post, .bio{
+    padding: 20px;
+}
+footer{
+    position: absolute;
+}

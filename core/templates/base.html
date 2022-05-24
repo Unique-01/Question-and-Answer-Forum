@@ -1,30 +1,60 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unique Overflow</title>
-</head>
-<body>
-    <div>
-        <nav>
-            <div>Unique Overflow</div>
-            <div>
-                <ul>
-                    <li><a href="{% url 'home' %}">Home</a></li>
-                    <li><a href="">About</a></li>
-                    <li><a href="">Contact Admin</a></li>
-                    <li><a href="{% url 'question_form' %}">Add Question</a></li>
-                </ul>
-            </div>
-        </nav>
+    <head>
+        <meta charset="UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="description" content="Question and Answer forum for developers"/>
+        <meta name="keywords" content="forum,developers,network"/>
+        <!-------------------- Bootstrap CSS  -------------------->
+        <link rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
+              integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu"
+              crossorigin="anonymous"/>
+
+        <!-------------------------Custom CSS  ------------------>
+        <link rel="stylesheet" href="{% static 'style.css' %}"/>
+        <!--------------------------- highlight.js --------------------------->
+        <!---------------------For code snippet highlight in ckeditor  ------------->
+        <link rel="stylesheet"
+              href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css"/>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+        <!-- highlight.js -->
+       
+        <title>Q & A Forum</title>
+    </head>
+    <body>
         
-        {% block content %}
-            
-        {% endblock content %}
-
-    </div>
-
-</body>
+        <!--------------- NavBar  ------------------>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            {% include 'navbar.html' %}
+        </nav>
+        <!-------------------Page Content  ----------------->
+        <section class="container">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <p>
+                            {{ message }}
+                        </p>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% block content %}
+            {% endblock content %}
+        </section>
+        <!-------------------Page Footer  ------------------>
+        <footer class="col-md-2 navbar-fixed-bottom ">
+            {% include 'footer.html' %}
+        </footer>
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+    </body>
 </html>

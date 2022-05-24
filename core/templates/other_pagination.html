@@ -1,0 +1,64 @@
+<nav aria-label="Page Navigation">
+    <ul class="pagination">
+        <!--------------------------- Previous Page Button  --------------------------------------------->
+        {% if page_obj.has_previous %}
+            {% if 'page' in request.get_full_path %}
+                <li>
+                    <a href="{{ request.get_full_path|slice:-7 }}&page={{ page_obj.previous_page_number }}"
+                       aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li>
+                    <a href="{{ request.get_full_path }}&page={{ page_obj.previous_page_number }}"
+                       aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+        {% endif %}
+        <!--------------------------------- Pagination Range Numbers  -------------------------------->
+        {% for num in page_obj.paginator.page_range %}
+            {% if 'page' in request.get_full_path %}
+                {% if page_obj.number == num %}
+                    <li class="active">
+                        <span >{{ num }} <span class="sr-only">(current)</span></span>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{{ request.get_full_path|slice:-7 }}&page={{ num }}">{{ num }}</a>
+                    </li>
+                {% endif %}
+            {% else %}
+                {% if page_obj.number == num %}
+                    <li class="active">
+                        <a href="{{ request.get_full_path }}&page={{ num }}">{{ num }}</a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{{ request.get_full_path }}&page={{ num }}">{{ num }}</a>
+                    </li>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        <!-------------------------------- Next Page Button  -------------------------------->
+        {% if page_obj.has_next %}
+            {% if 'page' in  request.get_full_path %}
+                <li>
+                    <a href="{{ request.get_full_path|slice:-7 }}&page={{ page_obj.next_page_number }}"
+                       aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li>
+                    <a href="{{ request.get_full_path }}&page={{ page_obj.next_page_number }}"
+                       aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+        {% endif %}
+    </ul>
+</nav>

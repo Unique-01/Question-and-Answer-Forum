@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+   <div class="index bio">{% include 'basic_profile.html' %}</div>
+   <br/><br/>
+    <div>
+        <form action=""
+              class="col-md-6 col-md-offset-2 index bio"
+              enctype="multipart/form-data"
+              method="post">
+            {% csrf_token %}
+            <fieldset>
+                <legend>
+                    <p>
+                        Profile Update
+                    </p>
+                </legend>
+                {{ profile_form.media }}
+                {{ user_form|crispy }}
+                {{ profile_form|crispy }}
+            </fieldset>
+            <button class="btn btn-primary" type="submit">Update Profile</button>
+        </form>
+    </div>
+    <div>
+        <br/>
+        <a class="btn btn-default" href="{% url 'change_password' %}">Change Password</a>
+    </div>
+{% endblock content %}

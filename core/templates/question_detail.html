@@ -1,150 +1,80 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load crispy_forms_tags %}
-
+{% load static %}
 {% block content %}
-
-{% if user.is_authenticated %}
-<div>
-    <div>
+    <div class="question_detail container col-md-10 col-md-offset-1 index">
         <div>
-            <h4>{{question.topic}}</h4>
-            <small>
-                <p>by {{question.user.username}} on {{question.date_posted}}</p>
-            </small>
-            <p>{{question.description }}</p>
+            <div>
+                <div class="pull-right">
+                    {% if user == question.user %}
+                        <a class="btn btn-danger"
+                           href="{% url 'delete_question' question.slug %}">Delete</a>
+                        <a class="btn btn-default"
+                           href="{% url 'update_question' question.id %}">Update</a>
+                    {% endif %}
+                </div>
+                <h4>{{ question.topic |capfirst }}</h4>
+                <p class="text-muted text-right">
+                    <small> <span>Asked {{ question.date_posted }}</span>&nbsp;
+                    <span>Modified {{ question.date_modified }}</span></small>
+                </p>
+                <p>
+                    {{ question.content | safe }}
+                </p>
+            </div>
+            <hr />
         </div>
-        <div>
-            {% if question.image_description %}
-            <p>{{question.image_description}}</p>
-            {% endif %}
-
-            {% if question.image %}
-            <img src="{{ question.image.url}}" alt="" width="500px" height="300px">
-            <hr>
-            {% endif %}
-        </div>
-        <div>
-
-            {% if question.another_image_description %}
-            <p>{{question.another_image_description}}</p>
-            {% endif %}
-
-            {% if question.another_image %}
-            <img src="{{ question.another_image.url}}" alt="" width="500px" height="300px">
-            <hr>
-            {% endif %}
-        </div>
-        <div>
-
-            {% if question.other_image_description %}
-            <p>{{question.other_image_description}}</p>
-            {% endif %}
-
-            {% if question.other_image %}
-            <img src="{{ question.other_image.url}}" alt="" width="500px" height="300px">
-            {% endif %}
-        </div>
-    </div>
-    <h4>{{answers.count}} Answers</h4>
-    <details>
-        <summary>
-            <p>View Answers</p>
-        </summary>
+        <h4>{{ answers.count }} Answer(s)</h4>
         <div>
             {% for answer in answers %}
-            <small>
-                <p>{{answer.answer}}</p>
-            </small>
-            <span><small> by: {{answer.user.username}}</small></span>
-            <small>
-                <p> email: {{answer.email}}</p>
+            <hr/>
+                <p>
+                    {{ answer.answer  | safe }}
+                </p>
+                <div class="col-md-offset-9 {% cycle 'bg-info' 'bg' %} " >
+                    <small class="text-muted">answered {{ answer.date_posted }}</small>
+                    <div class="media-left media-middle">
+                        {% if answer.user.profile.profile_image %}
+                            <img src="{{ answer.user.profile.profile_image.url }}"
+                                 width="40px"
+                                 height="40px"
+                                 alt=""
+                                 class="media-object"/>
 
-                {% if answer.image %}
-                <img src="{{answer.image.url}}" alt="" width="300px">
-                {% endif %}
+                        {% else %}
+                        <img src="{% static 'avatar.png' %}"
+                                 width="40px"
+                                 height="40px"
+                                 alt=""
+                                 class="media-object"/>
 
-            </small>
+                        {% endif %}
+                    </div>
+                    <div class="media-body">
+                        <p class="media-heading">
+                            <a href="{% url 'users' %}">{{ answer.user.username |capfirst }}</a>
+                            <br />
+                            {% if user == question.user %}
+                                <small >
+                                    <a class="text-muted" href="{% url 'delete_answer' answer.pk %}">Delete</a>
+                                    <a class="text-muted" href="{% url 'update_question' question.id %}">Update</a>
+                                </small>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
             {% endfor %}
-
         </div>
-    </details>
-    <div>
-        {% if new_answer %}
-        <p>Your answer has been posted</p>
-        {% endif %}
+        <!-- {% if new_answer %}
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <p>
+                    <strong>Your answer has been posted</strong>
+                </p>
+            </div>
+        {% endif %} -->
+        {% include 'answer_form.html' %}
     </div>
-    <div>
-        <h5>Add Answer</h5>
-        <form action="" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{answer_form | crispy}}
-            <button type="submit">Add Answer</button>
-        </form>
-    </div>
-</div>
-{% else %}
-<div>
-    <div>
-        <h4>{{question.topic}}</h4>
-        <small>
-            <p>by {{question.user.username}} on {{question.date_posted}}</p>
-        </small>
-        <p>{{question.description }}</p>
-    </div>
-    <div>
-        {% if question.image_description %}
-        <p>{{question.image_description}}</p>
-        {% endif %}
-
-        {% if question.image %}
-        <img src="{{ question.image.url}}" alt="" width="500px" height="300px">
-        <hr>
-        {% endif %}
-    </div>
-    <div>
-
-        {% if question.another_image_description %}
-        <p>{{question.another_image_description}}</p>
-        {% endif %}
-
-        {% if question.another_image %}
-        <img src="{{ question.another_image.url}}" alt="" width="500px" height="300px">
-        <hr>
-        {% endif %}
-    </div>
-    <div>
-
-        {% if question.other_image_description %}
-        <p>{{question.other_image_description}}</p>
-        {% endif %}
-
-        {% if question.other_image %}
-        <img src="{{ question.other_image.url}}" alt="" width="500px" height="300px">
-        {% endif %}
-    </div>
-</div>
-<h4>{{answers.count}} Answers</h4>
-<details>
-    <summary>
-        <p>View Answers</p>
-    </summary>
-    <div>
-        {% for answer in answers %}
-        <small>
-            <p>{{answer.answer}}</p>
-        </small>
-        <span><small> by: {{answer.user.username}}</small></span>
-        <small>
-            <p> email: {{answer.email}}</p>
-
-            {% if answer.image %}
-            <img src="{{answer.image.url}}" alt="" width="300px">
-            {% endif %}
-
-        </small>
-        {% endfor %}
-
-    </div>
-</details>
-{% endif %}
 {% endblock content %}

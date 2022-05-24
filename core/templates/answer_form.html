@@ -1,0 +1,21 @@
+{% load crispy_forms_tags %}
+<div>
+    {% if user.is_authenticated %}
+        <div class="container col-md-12">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ answer_form.media }}
+                {{ answer_form | crispy }}
+                <button class="btn btn-primary" type="submit">Add Answer</button>
+            </form>
+        </div>
+    {% else %}
+        <div class="alert alert-warning " role="alert">
+            <p >
+                You must <strong>
+                <a class="alert-link" href="{% url 'login' %}">Login</a>
+            </strong>to add answers
+        </p>
+    </div>
+{% endif %}
+</div>

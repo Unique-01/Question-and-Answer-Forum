@@ -1,28 +1,56 @@
-{% extends 'base.html' %}
-{% load crispy_forms_tags %}
-
-
+{% extends "base.html" %}
+{% load static %}
 {% block content %}
-{{user.username}}
-{{user.email}}
-
-{% if user.profile.image %}
-    <img src="{{user.profile.image.url}}" alt="">
-{% endif %}
-    
-
-<div>
-    <form action="" enctype="multipart/form-data" method="post">
-        {% csrf_token %}
-        <fieldset>
-            <legend>Profile info</legend>
-            {{user_form|crispy}}
-            {{profile_form|crispy}}  
-        </fieldset>
-        <div>
-            <button type="submit">Update</button>
+    <div class="index bio">
+        {% include 'basic_profile.html' %}
+        <form action="">
+            <button name="tab" value="question" type="submit" class="btn btn-default">
+                <span class="glyphicon glyphicon-globe"></span> Questions
+            </button>
+            <button name="tab" value="answer" type="submit" class="btn btn-default">Answers</button>
+        </form>
+    </div>
+    <div class="container">
+        {% if user.profile.bio %}
+            <div class=" col-md-offset-2 col-md-6 ">
+                {% if user.profile.bio %}
+                    <h3>About</h3>
+                    <div class="index bio">{{ user.profile.bio |safe }}</div>
+                {% endif %}
+            </div>
+        {% endif %}
+        <div class="col-md-6 col-md-offset-2">
+            {% if question_obj != '' %}
+                <h3>{{ question_obj.count }} Question(s)</h3>
+                <div class="index bio ">
+                    {% for question in page_obj %}
+                        <p>
+                            <a href="{% url 'question_detail' question.slug %}">{{ question.topic }}</a>
+                        </p>
+                        <p class="text-right text-muted">
+                            <small>asked {{ question.date_posted }}</small>
+                        </p>
+                        <hr />
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
-    </form>
-</div>
+        <div class="col-md-6 col-md-offset-2">
+            {% if answer_obj != '' %}
+                <h3>{{ answer_obj.count }} Answer(s)</h3>
+                <div class="index bio ">
+                    {% for answer in page_obj %}
+                        <p>
+                            <a href="{% url 'question_detail' answer.question.slug %}">{{ answer.question.topic | truncatewords:'20' }}</a>
+                        </p>
+                        <p class="text-right text-muted">
+                            <small>answered {{ answer.date_posted }}</small>
+                        </p>
+                        <hr />
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+       <div class="col-md-12 text-center" >{% include 'other_pagination.html' %}</div>
+    </div>
 {% endblock content %}
-    

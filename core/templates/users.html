@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div class="users index container bio ">
+        <h3>Users</h3>
+        <div class="row">
+            {% for user in users %}
+                <div class="col-md-3">
+                    <div class=" media">
+                        <div class="media-left ">
+                            {% if user.profile.profile_image %}
+                                <a href="{% url 'profile' user.username %}">
+                                    <img src="{{ user.profile.profile_image.url }}"
+                                         width="40px"
+                                         height="40px"
+                                         alt=""
+                                         class="media-object"/>
+                                </a>
+                            {% else %}
+                                <a href="{% url 'profile' user.username %}">
+                                    <img src="{% static 'avatar.png' %}"
+                                         width="40px"
+                                         height="40px"
+                                         alt=""
+                                         class="media-object"/>
+                                </a>
+                            {% endif %}
+                        </div>
+                        <div class="media-body">
+                            {% if request.user == user %}
+                                <a href="{% url 'profile' user.username %}">You</a>
+                            {% else %}
+                                <a href="{% url 'profile' user.username %}">{{ user.username }}</a>
+                            {% endif %}
+                            {% if user.profile.location %}
+                                <p class="text-muted">
+                                    {{ user.profile.location }}
+                                </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}

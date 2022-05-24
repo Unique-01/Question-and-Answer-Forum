@@ -1,21 +1,24 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load crispy_forms_tags %}
-
 {% block content %}
-
-{% if user.is_authenticated %}
-<div>
-    <form action="" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{form | crispy}}
-        <button type="submit">Add question</button>
-    </form>
-</div>
-{% else %}
-<div>
-    <p>You must Login to add question</p>
-    <a href="{% url 'login' %}">Login</a>
-</div>
-{% endif %}
+    <div >
+        {% if user.is_authenticated %}
+            <div class="col-md-6 col-md-offset-2 index bio">
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.media }}
+                    {{ form | crispy }}
+                    <button class="btn btn-primary" type="submit">Add question</button>
+                </form>
+            </div>
+        {% else %}
+            <div class="alert alert-warning " role="alert">
+                <p >
+                    You must
+                    <a class="alert-link" href="{% url 'login' %}">Login</a>
+                    to add question
+                </p>
+            </div>
+        {% endif %}
+    </div>
 {% endblock content %}
-    

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ update_form.media }}
+            {{ update_form|crispy }}
+            <button class="btn btn-default" type="submit">Update Question</button>
+        </form>
+    </div>
+{% endblock content %}

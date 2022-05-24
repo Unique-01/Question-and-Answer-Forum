@@ -21,8 +21,9 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('change_password/',auth_views.PasswordChangeView.as_view(template_name='change_password.html'),name='change_password'),
     path('accounts/',include('django.contrib.auth.urls')),
-    path('',include('core.urls'))
+    path('',include('core.urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)
