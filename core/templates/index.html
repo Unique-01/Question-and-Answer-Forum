@@ -10,7 +10,7 @@
                 <hr />
                 <div class="col-md-offset-1">
                     <h5>
-                        <a href="{% url 'question_detail' question.slug %}">{{ question.topic |capfirst }}</a>
+                        <a href="{% url 'question_detail' question.slug question.pk %}">{{ question.topic |capfirst }}</a>
                     </h5>
                     <small >
                         <p class="text-right">

@@ -8,7 +8,8 @@
                     {% csrf_token %}
                     {{ form.media }}
                     {{ form | crispy }}
-                    <button class="btn btn-primary" type="submit">Add question</button>
+                    <button class="btn btn-primary" type="submit">Ask question</button>
+                    <a href="{% url 'home' %}" class="btn btn-default">Cancel</a>
                 </form>
             </div>
         {% else %}

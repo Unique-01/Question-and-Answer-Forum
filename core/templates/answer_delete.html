@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
-    <form action="" method="post">
+    <form action="" method="post" class="alert alert-warning">
         {% csrf_token %}
         {{ form.media }}
         <p>
-            Are you sure you want to delete {{ answer|truncatewords:'5' |safe }}
+            Are you sure you want to delete {{ answer.answer|truncatewords:'5' |safe }}
         </p>
+        <br/>
         <button class="btn btn-danger" type="submit">Delete</button>
-        <a class="btn btn-default" href="{% url 'question_detail' answer.question.slug %}">Cancel</a>
+        <a class="btn btn-default" href="{% url 'question_detail' answer.question.slug answer.question.pk %}">Cancel</a>
     </form>
 {% endblock content %}

@@ -25,7 +25,7 @@
                 <div class="index bio ">
                     {% for question in page_obj %}
                         <p>
-                            <a href="{% url 'question_detail' question.slug %}">{{ question.topic }}</a>
+                            <a href="{% url 'question_detail' question.slug question.pk %}">{{ question.topic }}</a>
                         </p>
                         <p class="text-right text-muted">
                             <small>asked {{ question.date_posted }}</small>
@@ -41,7 +41,7 @@
                 <div class="index bio ">
                     {% for answer in page_obj %}
                         <p>
-                            <a href="{% url 'question_detail' answer.question.slug %}">{{ answer.question.topic | truncatewords:'20' }}</a>
+                            <a href="{% url 'question_detail' answer.question.slug answer.question.pk %}">{{ answer.question.topic | truncatewords:'20' }}</a>
                         </p>
                         <p class="text-right text-muted">
                             <small>answered {{ answer.date_posted }}</small>

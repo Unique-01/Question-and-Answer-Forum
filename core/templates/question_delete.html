@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-    <form action="" method="post" class="alert alert-danger text-center">
+    <form action="" method="post" class="alert alert-warning">
         {% csrf_token %}
         <p>
             Are you sure you want to delete "{{ question.topic }}"
         </p>
+        <br/>
         <button class="btn btn-danger" type="submit">Delete</button>
-        <a class="btn btn-default" href="{% url 'question_detail' question.slug %}">Cancel</a>
+        <a class="btn btn-default" href="{% url 'question_detail' question.slug question.pk %}">Cancel</a>
     </form>
 {% endblock content %}

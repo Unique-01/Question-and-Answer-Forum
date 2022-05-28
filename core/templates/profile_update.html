@@ -21,6 +21,7 @@
                 {{ profile_form|crispy }}
             </fieldset>
             <button class="btn btn-primary" type="submit">Update Profile</button>
+            <a href="{% url 'profile' request.user.username %}" class="btn btn-default">Cancel</a>
         </form>
     </div>
     <div>

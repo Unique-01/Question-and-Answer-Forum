@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <div class="col-md-8 col-md-offset-2 index bio">
+    <div class="col-md-6 col-md-offset-2 index bio">
         <form action="" method="post">
             {% csrf_token %}
             {{ update_form.media }}
             {{ update_form|crispy }}
-            <button class="btn btn-primary" type="submit">Update Question</button>
-            <a href="{% url 'question_detail' obj.slug obj.pk %}" class="btn btn-default">Cancel</a>
+            <button class="btn btn-primary" type="submit">Update Answer</button>
+            <a href="{% url 'question_detail' obj.question.slug obj.question.pk %}" class="btn btn-default">Cancel</a>
         </form>
     </div>
 {% endblock content %}

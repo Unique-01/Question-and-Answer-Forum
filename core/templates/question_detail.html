@@ -8,7 +8,7 @@
                 <div class="pull-right">
                     {% if user == question.user %}
                         <a class="btn btn-danger"
-                           href="{% url 'delete_question' question.slug %}">Delete</a>
+                           href="{% url 'delete_question' question.slug question.pk %}">Delete</a>
                         <a class="btn btn-default"
                            href="{% url 'update_question' question.id %}">Update</a>
                     {% endif %}
@@ -18,6 +18,7 @@
                     <small> <span>Asked {{ question.date_posted }}</span>&nbsp;
                     <span>Modified {{ question.date_modified }}</span></small>
                 </p>
+                <hr/>
                 <p>
                     {{ question.content | safe }}
                 </p>
@@ -31,7 +32,7 @@
                 <p>
                     {{ answer.answer  | safe }}
                 </p>
-                <div class="col-md-offset-9 {% cycle 'bg-info' 'bg' %} " >
+                <div class="col-md-offset-9 {% cycle 'bg-info' 'bg' %} p-5 " >
                     <small class="text-muted">answered {{ answer.date_posted }}</small>
                     <div class="media-left media-middle">
                         {% if answer.user.profile.profile_image %}
@@ -57,7 +58,7 @@
                             {% if user == question.user %}
                                 <small >
                                     <a class="text-muted" href="{% url 'delete_answer' answer.pk %}">Delete</a>
-                                    <a class="text-muted" href="{% url 'update_question' question.id %}">Update</a>
+                                    <a class="text-muted" href="{% url 'update_answer' answer.id %}">Update</a>
                                 </small>
                             {% endif %}
                         </p>
@@ -65,16 +66,7 @@
                 </div>
             {% endfor %}
         </div>
-        <!-- {% if new_answer %}
-            <div class="alert alert-success alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <p>
-                    <strong>Your answer has been posted</strong>
-                </p>
-            </div>
-        {% endif %} -->
+        <hr/><br/>
         {% include 'answer_form.html' %}
     </div>
 {% endblock content %}

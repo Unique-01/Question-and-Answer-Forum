@@ -50,7 +50,8 @@ def profile(request, username):
     page = None
     page_obj = None
     if query == 'question':
-        question_obj = Question.objects.filter(user=user).order_by('-date_posted')
+        question_obj = Question.objects.filter(
+            user=user).order_by('-date_posted')
         answer_obj = ''
         # user questions pagination
         page = Paginator(question_obj, 10)
@@ -139,9 +140,9 @@ class QuestionFormView(generic.FormView):
 
 
 ############### Question detail ################
-def question_detail(request, slug):
+def question_detail(request, slug, pk):
     template_name = 'question_detail.html/'
-    question = get_object_or_404(Question, slug=slug)
+    question = get_object_or_404(Question, slug=slug, pk=pk)
     answers = question.answers.all()
     new_answer = None
 
@@ -174,7 +175,7 @@ def question_detail(request, slug):
 def question_update(request, id):
     obj = get_object_or_404(Question, id=id)
     update_form = QuestionForm(request.POST or None, instance=obj)
-    context = {'update_form': update_form}
+    context = {'update_form': update_form,'obj':obj}
 
     if update_form.is_valid():
         obj = update_form.save(commit=False)
@@ -183,14 +184,12 @@ def question_update(request, id):
 
         messages.success(request, "Question Updated Successfully")
 
-        context = {'update_form': update_form}
-
-        return render(request, 'question_update.html', context)
+        return redirect('question_detail', obj.slug, obj.pk)
 
     else:
         context = {'update_form': update_form,
-                   'error': 'The form was not updated successfully. Please enter in a title and content'}
-        return render(request, 'question_update.html', context)
+                   'error': 'The form was not updated successfully. Please enter in a title and content','obj':obj}
+    return render(request, 'question_update.html', context)
 
 
 ############### Question Delete ################
@@ -211,3 +210,27 @@ class AnswerDelete(generic.DeleteView):
 
     def form_valid(self, form):
         messages.success(self.request, "Answer has been deleted")
+
+
+############ Answer Update #############
+@login_required
+def answer_update(request, id):
+    obj = get_object_or_404(Answer, id=id)
+    update_form = AnswerForm(None, instance=obj)
+    if request.method == 'POST':
+        update_form = AnswerForm(request.POST or None, instance=obj)
+
+        if update_form.is_valid:
+            obj = update_form.save(commit=False)
+
+            obj.save()
+
+            messages.success(request, "Answer has been Updated Successfully")
+
+            return redirect('question_detail', obj.question.slug, obj.question.pk)
+        else:
+            messages.error(request, "Answer not updated")
+
+    context = {'update_form': update_form ,'obj':obj}
+
+    return render(request, 'answer_update.html', context)
